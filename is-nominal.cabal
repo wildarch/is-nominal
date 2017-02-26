@@ -1,0 +1,47 @@
+name:                is-nominal
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/wildarch/is-nominal#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Daan de Graaf
+maintainer:          daandegraaf9@gmail.com
+copyright:           Copyright: (c) 2017-2020 Daan de Graaf
+category:            Machine Learning
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Lib
+  build-depends:       base >= 4.7 && < 5
+                     , wreq >= 0.5.0.0 && < 0.6.0.0
+                     , lens-aeson >= 1.0 && < 2.0
+                     , lens >= 4.15 && < 4.16
+                     , aeson >= 1.0 && < 2.0
+                     , text >= 1.2 && < 1.3
+                     , bytestring >= 0.10 && < 0.11
+  default-language:    Haskell2010
+
+executable is-nominal-exe
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , is-nominal
+  default-language:    Haskell2010
+
+test-suite is-nominal-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , is-nominal
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/wildarch/is-nominal
