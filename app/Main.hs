@@ -15,14 +15,14 @@ main = do
 
   -- INPUT
     token <- getLine
-    input <- getCourses token
+    courses <- getCourses token
 
   -- TRANSFORM
-    let result = transform input
+    let avg = transform courses
 
     -- OUTPUT
-    list input
-    display result
+    list courses
+    display avg
 
 transform :: [Course] -> Average
 transform = average . mapMaybe grade
@@ -33,13 +33,13 @@ average gs = sum gs / genericLength gs
 display :: Average -> IO ()
 display avg = do
     putStrLn $ "Average grade: " ++ show avg ++ "/100"
-    advice avg
+    putStrLn $ advice avg
 
 list :: [Course] -> IO ()
 list = mapM_ print
 
-advice :: Average -> IO ()
+advice :: Average -> String
 advice avg
-    | avg < 55 = putStrLn "You'd better step it up buddy"
-    | avg > 65 = putStrLn "Way to go dude!"
-    | otherwise = putStrLn "You're living on the edge"
+    | avg < 55 = "You'd better step it up buddy"
+    | avg > 65 = "Way to go dude!"
+    | otherwise = "You're living on the edge"
