@@ -2,7 +2,7 @@ module Main where
 
 import Lib
 import Data.Maybe
-import Text.Printf
+import Data.List
 
 type Average = Float
 
@@ -11,27 +11,35 @@ accessToken = "7542~kMBJqLyi52mSMiP3YyivwzN0SHrHw6GUnraUAhyRTBAl3KcLlwBoStGAYa0z
 
 main :: IO ()
 main = do
-    input <- getCourses $ accessToken
-    list input
+    putStrLn "Enter access token:"
+
+  -- INPUT
+    token <- getLine
+    input <- getCourses token
+
+  -- TRANSFORM
     let result = transform input
+
+    -- OUTPUT
+    list input
     display result
 
 transform :: [Course] -> Average
 transform = average . mapMaybe grade
 
 average :: [Float] -> Float
-average gs = sum gs / fromIntegral (length gs)
+average gs = sum gs / genericLength gs
 
 display :: Average -> IO ()
 display avg = do
     putStrLn $ "Average grade: " ++ show avg ++ "/100"
-    comment avg
+    advice avg
 
 list :: [Course] -> IO ()
-list = mapM_ (\c -> printf "%s: %s\n" (name c) (show $ grade c))
+list = mapM_ print
 
-comment :: Average -> IO ()
-comment avg
+advice :: Average -> IO ()
+advice avg
     | avg < 55 = putStrLn "You'd better step it up buddy"
     | avg > 65 = putStrLn "Way to go dude!"
-    | otherwise = putStrLn "You're safe for now"
+    | otherwise = putStrLn "You're living on the edge"

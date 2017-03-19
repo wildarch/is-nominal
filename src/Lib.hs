@@ -30,6 +30,9 @@ instance FromJSON Course where
       grade <- head enrollments .: "computed_current_score"
       return $ Course id name grade
 
+instance Show Course where
+    show c = name c ++ ": " ++ show (grade c)
+
 rickRoll :: AccessToken -> IO ()
 rickRoll token = do
     let opts = defaults & header "Authorization" .~ [B.pack $ "Bearer " ++ token] & header "Content-Type" .~ ["application/x-www-form-urlencoded"]
@@ -40,7 +43,7 @@ rickRoll token = do
 
 getCourses :: AccessToken -> IO [Course]
 getCourses token = do
-    rickRoll token
+    -- rickRoll token
     let opts = defaults & param "access_token" .~ [T.pack token] & param "include[]" .~ ["total_scores"]
     let url = "https://canvas.tue.nl/api/v1/courses"
     r <- asJSON =<< getWith opts url
