@@ -13,7 +13,9 @@ main :: IO ()
 main = do
   -- INPUT
     readToken <- getToken
-    let token = fromMaybe accessToken readToken
+    let token = case readToken of
+          Just t -> t
+          Nothing -> accessToken
 
     courses <- getCourses token
 
