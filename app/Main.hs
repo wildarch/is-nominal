@@ -11,10 +11,10 @@ accessToken = "7542~kMBJqLyi52mSMiP3YyivwzN0SHrHw6GUnraUAhyRTBAl3KcLlwBoStGAYa0z
 
 main :: IO ()
 main = do
-    putStrLn "Enter access token:"
-
   -- INPUT
-    token <- getLine
+    readToken <- getToken
+    let token = fromMaybe accessToken readToken
+
     courses <- getCourses token
 
   -- TRANSFORM
@@ -24,6 +24,15 @@ main = do
     list courses
     display avg
 
+getToken :: IO (Maybe String)
+getToken = do
+    putStrLn "Enter access token:"
+    line <- getLine
+    return $ if line == ""
+      then Nothing
+      else Just line
+
+
 transform :: [Course] -> Average
 transform = average . mapMaybe grade
 
@@ -32,8 +41,8 @@ average gs = sum gs / genericLength gs
 
 display :: Average -> IO ()
 display avg = do
-    putStrLn $ "Average grade: " ++ show avg ++ "/100"
-    putStrLn $ advice avg
+    putStrLn ("Average grade: " ++ show avg ++ "/100")
+    putStrLn (advice avg)
 
 list :: [Course] -> IO ()
 list = mapM_ print
